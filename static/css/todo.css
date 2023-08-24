@@ -1,0 +1,10 @@
+#exampleFormControlInput1 {
+  border-color: transparent;
+}
+#exampleFormControlInput1:focus {
+  border-color: transparent;
+  box-shadow: none;
+}
+.form-filter {
+  width: 150px;
+}
