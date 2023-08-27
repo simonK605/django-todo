@@ -1,3 +1,6 @@
 from django.contrib import admin
+from apps.todo.models import *
 
-# Register your models here.
+
+admin.site.register(Todo)
+admin.site.register(Point)
