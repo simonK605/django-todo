@@ -41,43 +41,32 @@
                             </select>
                         </div>
 
-                        <ul class="list-group list-group-horizontal rounded-0 bg-transparent">
-                            <li class="list-group-item d-flex align-items-center ps-0 pe-3 py-1 rounded-0 border-0 bg-transparent">
-                                <div class="form-check">
-                                    <input class="form-check-input me-0" type="checkbox" value="" id="flexCheckChecked1" checked />
-                                </div>
-                            </li>
-                            <li class="list-group-item px-3 py-1 d-flex align-items-center flex-grow-1 border-0 bg-transparent">
-                                <p class="lead fw-normal mb-0">Buy groceries for next week</p>
-                            </li>
-                            <li class="list-group-item ps-3 pe-0 py-1 rounded-0 border-0 bg-transparent">
-                                <div class="text-end text-muted">
-                                    <a href="#!" class="text-muted" data-mdb-toggle="tooltip" title="Created date">
-                                        <p class="small mb-0"><i class="fas fa-info-circle me-2"></i>28th Jun 2020</p>
-                                    </a>
-                                </div>
-                            </li>
-                        </ul>
-
-                        <ul class="list-group list-group-horizontal rounded-0">
-                            <li class="list-group-item d-flex align-items-center ps-0 pe-3 py-1 rounded-0 border-0 bg-transparent">
-                                <div class="form-check">
-                                    <input class="form-check-input me-0" type="checkbox" value="" id="flexCheckChecked2"
-                                        aria-label="..." />
-                                </div>
-                            </li>
-                            <li class="list-group-item px-3 py-1 d-flex align-items-center flex-grow-1 border-0 bg-transparent">
-                                <p class="lead fw-normal mb-0">Renew car insurance</p>
-                            </li>
-                            <li class="list-group-item ps-3 pe-0 py-1 rounded-0 border-0 bg-transparent">
-                                <div class="text-end text-muted">
-                                    <a href="#!" class="text-muted" data-mdb-toggle="tooltip" title="Created date">
-                                        <p class="small mb-0"><i class="fas fa-info-circle me-2"></i>28th Jun 2020</p>
-                                    </a>
-                                </div>
-                            </li>
-                        </ul>
-
+                        <table class="table mb-4" style="background-color: #eff1f2;">
+                            <thead>
+                                <tr>
+                                    <th width="5%">No.</th>
+                                    <th width="55%">Todo item</th>
+                                    <th width="20%">Point</th>
+                                    <th width="20%">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for todo in todos %}
+                                    <tr>
+                                        <th scope="row">{{ todo.id }}</th>
+                                        <td>{{ todo.name }}</td>
+                                        <td>{{ todo.point_id }}</td>
+                                        <td>
+                                            <button type="submit" class="btn btn-danger">Delete</button>
+                                            <button type="submit" class="btn btn-success ms-1">Finish</button>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                        <div>
+                            <span>You have {{ points_sum }} points</span>
+                        </div>
                     </div>
                 </div>
             </div>
