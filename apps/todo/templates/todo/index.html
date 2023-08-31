@@ -20,7 +20,12 @@
                                     <input type="text" name="name" class="form-control form-control-lg" placeholder="Name">                                        
                                 </div>
                                 <div class="d-flex flex-row align-items-center">
-                                    <input type="number" name="point" class="form-control form-control-lg" placeholder="Point">                                        
+                                    <select class="point-select form-select form-filter" name="point_id">
+                                        <option value="">Select the point</option>
+                                        {% for point in points %}
+                                            <option value="{{ point.id }}">{{ point.value }}</option>
+                                        {% endfor %}
+                                    </select>
                                 </div>
                                 <div>
                                     <label for="done">Finished</label>
@@ -49,8 +54,9 @@
                             <thead>
                                 <tr>
                                     <th width="5%">No.</th>
-                                    <th width="55%">Todo item</th>
-                                    <th width="20%">Point</th>
+                                    <th width="50%">Todo item</th>
+                                    <th width="10%">Finished</th>
+                                    <th width="15%">Point</th>
                                     <th width="20%">Actions</th>
                                 </tr>
                             </thead>
@@ -59,21 +65,24 @@
                                     <tr>
                                         <th scope="row">{{ todo.id }}</th>
                                         <td>
-                                            <a href="{% url 'todo.show' todo.id %}">
+                                            <a href="{% url 'todo.show' todo.id %}" style="text-decoration: {% if todo.done %}line-through{% else %}none{% endif %}">
                                                 {{ todo.name }}
                                             </a>
                                         </td>
+                                        <td>{% if todo.done %}Yes{% else %}No{% endif %}</td>
                                         <td>{{ todo.point_id }}</td>
                                         <td>
-                                            <button type="submit" class="btn btn-danger">Delete</button>
-                                            <button type="submit" class="btn btn-success ms-1">Finish</button>
+                                            <a class="btn btn-danger" href="{% url 'todo.delete' todo.id %}">Delete</button>
+                                            <a class="btn btn-success ms-1" href="{% url 'todo.finish' todo.id %}">
+                                                {% if todo.done %}Unfinish{% else %}Finish{% endif %}
+                                            </a>
                                         </td>
                                     </tr>
                                 {% endfor %}
                             </tbody>
                         </table>
                         <div class="d-flex justify-content-end">
-                            <span class="lead">You have <span class="text-primary">{{ points_sum }}</span> points</span>
+                            <span class="lead">You have <span class="text-primary">{% if points_sum %}{{ points_sum }}{% else %}0{% endif %}</span> points</span>
                         </div>
                     </div>
                 </div>
