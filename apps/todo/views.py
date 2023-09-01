@@ -31,8 +31,29 @@ def show(request, id):
 
 def store(request):
     form = TodoForm(request.POST)
-    print(request.POST)
-    print(form.is_valid())
+    if form.is_valid():
+        todo = form.save()
+
+    return redirect('todo.index')
+
+
+def edit(request, id):
+    todos = Todo.objects.all()
+    points_sum = Todo.objects.filter(done=True).aggregate(points_sum=Sum('point_id__value'))['points_sum']
+    todo = get_object_or_404(Todo, id=id)
+    form = TodoForm(instance=todo)
+
+    return render(request, 'todo/index.html', {
+        'todo': todo,
+        'todos': todos,
+        'points_sum' : points_sum,
+        'points': Point.objects.order_by('value')
+    })
+
+
+def update(request, id):
+    todo = get_object_or_404(Todo, id=id)
+    form = TodoForm(request.POST, instance=todo)
     if form.is_valid():
         todo = form.save()
 
@@ -50,4 +71,5 @@ def finish(request, id):
     todo = get_object_or_404(Todo, id=id)
     todo.done = not todo.done
     todo.save()
+
     return redirect('todo.index')

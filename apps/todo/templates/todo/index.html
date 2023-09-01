@@ -13,23 +13,27 @@
                             <h1 class="text-center text-primary">My Todo</h1>
                         </p>
 
-                        <form class="pb-2" action="{% url 'todo.store' %}" method="post">
+                        <form class="pb-2" action="{%if todo %}{% url 'todo.update' todo.id %}{% else %}{% url 'todo.store' %}{% endif %}" method="post">
                             {% csrf_token %}
                             <div class="d-flex justify-content-between align-items-center">
                                 <div class="d-flex flex-row align-items-center">
-                                    <input type="text" name="name" class="form-control form-control-lg" placeholder="Name">                                        
+                                    <input type="text" name="name" value="{{ todo.name }}" class="form-control form-control-lg" placeholder="Name">                                        
                                 </div>
                                 <div class="d-flex flex-row align-items-center">
                                     <select class="point-select form-select form-filter" name="point_id">
                                         <option value="">Select the point</option>
                                         {% for point in points %}
-                                            <option value="{{ point.id }}">{{ point.value }}</option>
+                                            {% if point.value|stringformat:"s" == todo.point_id|stringformat:"s" %}
+                                                <option selected value="{{ point.id }}">{{ point.value }}</option>
+                                            {% else %}
+                                                <option value="{{ point.id }}">{{ point.value }}</option>
+                                            {% endif %}
                                         {% endfor %}
                                     </select>
                                 </div>
                                 <div>
                                     <label for="done">Finished</label>
-                                    <input type="checkbox" id="done" name="done">
+                                    <input type="checkbox" {% if todo.done %}checked{% endif %} id="done" name="done">
                                 </div>
                             </div>
 
@@ -56,8 +60,8 @@
                                     <th width="5%">No.</th>
                                     <th width="50%">Todo item</th>
                                     <th width="10%">Finished</th>
-                                    <th width="15%">Point</th>
-                                    <th width="20%">Actions</th>
+                                    <th width="10%">Point</th>
+                                    <th width="25%">Actions</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -72,7 +76,8 @@
                                         <td>{% if todo.done %}Yes{% else %}No{% endif %}</td>
                                         <td>{{ todo.point_id }}</td>
                                         <td>
-                                            <a class="btn btn-danger" href="{% url 'todo.delete' todo.id %}">Delete</button>
+                                            <a class="btn btn-primary" href="{% url 'todo.edit' todo.id %}">Update</button>
+                                            <a class="btn btn-danger ms-1" href="{% url 'todo.delete' todo.id %}">Delete</button>
                                             <a class="btn btn-success ms-1" href="{% url 'todo.finish' todo.id %}">
                                                 {% if todo.done %}Unfinish{% else %}Finish{% endif %}
                                             </a>
