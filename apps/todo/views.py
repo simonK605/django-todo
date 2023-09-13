@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from django.db.models import Sum
 from django.shortcuts import get_object_or_404, render, redirect
+from .filters import TodoFilter
 
 # Models
 from .models import Todo
@@ -14,8 +15,12 @@ def index(request):
     todos = Todo.objects.all()
     points_sum = Todo.objects.filter(done=True).aggregate(points_sum=Sum('point_id__value'))['points_sum']
 
+    myFilter = TodoFilter(request.GET, queryset=todos)
+    todos = myFilter.qs
+
     return render(request, 'todo/index.html', {
         'todos': todos,
+        'myFilter': myFilter,
         'points_sum' : points_sum,
         'points': Point.objects.order_by('value')
     })
